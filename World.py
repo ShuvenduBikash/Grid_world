@@ -1,6 +1,7 @@
 from tkinter import *
 
 master = Tk()
+master.title("Grid world")
 
 # defining the grid size
 (x, y) = (4, 3)
@@ -139,7 +140,7 @@ me = board.create_rectangle(player[0] * Width + Width * 2 / 10, player[1] * Widt
                             width=1, tag="me")
 if render_cell_:
     create_cell_value()
-    
+
 board.grid(row=0, column=0)
 text.grid(row=1, column=0)
 
