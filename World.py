@@ -9,6 +9,7 @@ player = (0, y - 1)  # position of the player
 restart = False
 score = 1
 walk_reward = -0.04
+render_cell_ = True
 
 board = Canvas(master, width=x * Width, height=y * Width)
 walls = [(1, 1)]
@@ -18,7 +19,7 @@ for s in specials:
     V[s[1]][s[0]] = s[3]
 
 
-def render_grid(render_cell_value=False):
+def render_grid():
     global specials, walls, Width, x, y, player
     for i in range(x):
         for j in range(y):
@@ -39,11 +40,9 @@ render_grid()
 def render_cell_value():
     for i in range(y):
         for j in range(x):
-            board.create_text(j * Width + Width / 2, i * Width + Width / 2, fill="blue", font="Times 12",
+            if (i, j) not in walls:
+                board.create_text(j * Width + Width / 2, i * Width + Width / 2, fill="blue", font="Times 20",
                               text=V[i][j])
-
-
-render_cell_value()
 
 
 def try_move(dx, dy):
@@ -61,6 +60,9 @@ def try_move(dx, dy):
         board.coords(me, new_x * Width + Width * 2 / 10, new_y * Width + Width * 2 / 10, new_x * Width + Width * 8 / 10,
                      new_y * Width + Width * 8 / 10)
         player = (new_x, new_y)
+
+        if render_cell_:
+            render_cell_value()
 
     # handle the special grids
     for (i, j, c, w) in specials:
