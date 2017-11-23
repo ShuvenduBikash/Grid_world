@@ -16,10 +16,18 @@ cell_text = [[None for i in range(x)] for j in range(y)]
 board = Canvas(master, width=x * Width, height=y * Width)
 walls = [(1, 1)]
 specials = [(3, 1, "red", -1), (3, 0, "green", 1)]
-end_states = [(3,1), (3,0)]
+end_states = [(3, 1), (3, 0)]
+
+# Completable for deterministic policy
+# V = [[0 for i in range(x)] for j in range(y)]
+# for s in specials:
+#     V[s[1]][s[0]] = s[3]
+
 V = [[0 for i in range(x)] for j in range(y)]
+
+R = [[0 for i in range(x)] for j in range(y)]
 for s in specials:
-    V[s[1]][s[0]] = s[3]
+    R[s[1]][s[0]] = s[3]
 
 text = Label(master, height=1, width=18)
 text.config(text="Score: 1", font="Times 25")
@@ -59,7 +67,11 @@ def render_cell_value():
                 board.itemconfig(cell_text[i][j], text="{:.2f}".format(V[i][j]))
 
 
-
+def render_cell_reward():
+    for i in range(y):
+        for j in range(x):
+            if (i, j) not in walls:
+                board.itemconfig(cell_text[i][j], text="{:.2f}".format(R[i][j]))
 
 
 def can_go(state):
