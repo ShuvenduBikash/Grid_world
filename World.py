@@ -2,6 +2,7 @@ from tkinter import *
 
 master = Tk()
 
+
 # defining the grid size
 (x, y) = (4, 3)
 Width = 100  # Width of a grid
@@ -17,6 +18,9 @@ specials = [(3, 1, "red", -1), (3, 0, "green", 1)]
 V = [[0 for i in range(x)] for j in range(y)]
 for s in specials:
     V[s[1]][s[0]] = s[3]
+
+text = Label(master, height=1, width=18)
+text.config(text = "Score: 1", font="Times 25")
 
 
 def render_grid():
@@ -51,6 +55,7 @@ def try_move(dx, dy):
         restart_game()
     # update score
     score += walk_reward
+    text.config(text="Score: {:.6f}".format(score))
     print("score: ", score)
 
     # update the coordinate of agent
@@ -114,6 +119,7 @@ me = board.create_rectangle(player[0] * Width + Width * 2 / 10, player[1] * Widt
                             width=1, tag="me")
 
 board.grid(row=0, column=0)
+text.grid(row=1, column=0)
 
 
 def start_game():
