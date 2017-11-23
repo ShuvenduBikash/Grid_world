@@ -10,11 +10,14 @@ def run():
         time.sleep(1)
         for i in range(World.y):
             for j in range(World.x):
-                states = [(i+1, j), (i-1, j), (i, j+1), (i, j-1)]
+                states = [(i + 1, j), (i - 1, j), (i, j + 1), (i, j - 1)]
                 for state in states:
-                    if World.can_go(state) and (j, i) not in World.end_states:
-                        World.V[i][j] = max(World.V[i][j], gamma * World.V[state[0]][state[1]])
-                        World.render_cell_value()
+                    if World.can_go(state):
+                        if (j, i) not in World.end_states:
+                            World.V[i][j] = max(World.V[i][j], gamma * World.V[state[0]][state[1]])
+                            World.render_cell_value()
+                        else:
+                            World.V[i][j] = World.R[i][j]
 
 
 if __name__ == '__main__':

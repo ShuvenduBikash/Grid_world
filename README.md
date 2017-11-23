@@ -7,6 +7,6 @@ find the optimal value for each grid cell
 ### Deterministic 
 ![](images/ovf_de.png)
 
-###Stochastic 
+### Stochastic 
 ![](images/f2.png)
 ![](images/ovf_st.png)
