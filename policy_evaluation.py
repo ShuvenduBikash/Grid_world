@@ -5,7 +5,7 @@ import time
 
 def run():
     World.render_cell_value()
-    H = 10
+    H = 1
     gamma = 0.9
     noise = 0.2
     for _ in range(H):
@@ -15,23 +15,25 @@ def run():
         for state in list(World.neighbour_states.keys()):
             V[state] = World.R[state]
 
+            if state in World.end_states:
+                continue
+
             # find all possible neighbour of this state
-            neighbours = World.neighbour_states[state]
+            all_actions = World.available_actions[state]
+            action = policy[state]
+            state_val = 0
 
-            # calculate value making each of them most probable action each time
-            for neighbour in neighbours:
-                state_val = 0
-                high_prob = (1 - noise)
-                low_prob = noise / (len(neighbours) - 1)
+            high_prob = (1 - noise)
+            low_prob = noise / (len(all_actions) - 1)
 
-                state_val += high_prob * (World.R[state] + gamma * World.V[neighbour])
+            state_val += high_prob * (World.R[state] + gamma * World.V[World.next_state(state, action)])
 
-                # iterate stochastic probable state
-                for other in neighbours:
-                    if other != neighbour:
-                        state_val += low_prob * (World.R[state] + gamma * World.V[other])
+            # iterate stochastic probable state
+            for other in all_actions:
+                if other != action:
+                    state_val += low_prob * (World.R[state] + gamma * World.V[World.next_state(state, other)])
 
-                V[state] = max(V[state], state_val)
+            V[state] = state_val
 
         World.V = V
         World.render_cell_value()
@@ -44,7 +46,7 @@ if __name__ == '__main__':
         (0, 2): 'u',
         (1, 0): 'r',
         (1, 2): 'r',
-        (2, 0): 'u',
+        (2, 0): 'r',
         (2, 1): 'u',
         (2, 2): 'u',
         (3, 2): 'l',

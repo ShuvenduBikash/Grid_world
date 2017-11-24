@@ -44,6 +44,7 @@ for j in range(y):
 for s in specials:
     state = (s[0], s[1])
     R[state] = s[3]
+    V[state] = R[state]
 
 
 def can_go(state):
