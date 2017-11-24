@@ -163,6 +163,11 @@ def update_arrow_color(state, action, color='green'):
     board.itemconfig(arrows[state][action], fill=color)
 
 
+def clear_all_arrow(state):
+    for action in actions:
+        board.itemconfig(arrows[state][action], fill='white')
+
+
 def render_q_values():
     for state in states:
         for action in actions:
