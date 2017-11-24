@@ -58,6 +58,9 @@ def run():
 
 
 if __name__ == '__main__':
+    # Enabling specific grid
+    World.q_value_mode()
+
     t = threading.Thread(target=run)
     t.daemon = True
     t.start()
