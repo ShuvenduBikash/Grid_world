@@ -10,8 +10,12 @@ player = (0, y - 1)  # position of the player
 restart = False
 score = 1
 walk_reward = -0.04
-render_cell_ = True
+render_cell_ = False
+render_q = True
+render_me = False
+
 cell_text = [[None for i in range(x)] for j in range(y)]
+q_text = {}
 
 board = Canvas(master, width=x * Width, height=y * Width)
 walls = [(1, 1)]
@@ -26,13 +30,15 @@ states = []
 V = {}
 R = {}
 neighbour_states = {}
+Q = {}
+
 
 for j in range(y):
     for i in range(x):
         state = (i, j)
         V[state] = 0
 
-        if state not in end_states:
+        if state not in walls and state not in end_states:
             states.append(state)
             R[state] = 0
 
@@ -64,6 +70,11 @@ for state in states:
 for state in end_states:
     neighbour_states[state] = []
 
+for state in states:
+    q_values = [(state, 'u'), (state, 'r'), (state, 'd'), (state, 'l')]
+    for q in q_values:
+        Q[q] = 0
+print(Q)
 # print(neighbour_states)
 
 
@@ -83,6 +94,34 @@ def render_grid():
 
 
 render_grid()
+
+
+def render_tringle():
+    for state in states:
+        i = state[0]
+        j = state[1]
+        board.create_line(100 * i, 100 * j, (i + 1) * 100, (j + 1) * 100)
+        board.create_line((i + 1) * 100, 100 * j, 100 * i, (j + 1) * 100)
+
+
+def render_q_values():
+    for state in states:
+        x_ = state[0]
+        y_ = state[1]
+        q_text[state] = {}
+        q_text[state]['u'] = board.create_text(100 * x_ + 50, 100 * y_ + 15, fill="blue",
+                                               font="Times 10", text="{:.2f}".format(Q[(state), 'u']))
+        q_text[state]['r'] = board.create_text(100 * x_ + 75, 100 * y_ + 50, fill="blue",
+                                               font="Times 10", text="{:.2f}".format(Q[(state), 'r']))
+        q_text[state]['d'] = board.create_text(100 * x_ + 50, 100 * y_ + 85, fill="blue",
+                                               font="Times 10", text="{:.2f}".format(Q[(state), 'd']))
+        q_text[state]['l'] = board.create_text(100 * x_ + 25, 100 * y_ + 50, fill="blue",
+                                               font="Times 10", text="{:.2f}".format(Q[(state), 'l']))
+
+
+if render_q:
+    render_tringle()
+    render_q_values()
 
 
 def create_cell_value():
@@ -173,8 +212,9 @@ master.bind("<Down>", call_down)
 master.bind("<Right>", call_right)
 master.bind("<Left>", call_left)
 
-me = board.create_rectangle(player[0] * Width + Width * 2 / 10, player[1] * Width + Width * 2 / 10,
-                            player[0] * Width + Width * 8 / 10, player[1] * Width + Width * 8 / 10, fill="orange",
+if render_me:
+    me = board.create_rectangle(player[0] * Width + Width * 2 / 10, player[1] * Width + Width * 2 / 10,
+                                player[0] * Width + Width * 8 / 10, player[1] * Width + Width * 8 / 10, fill="orange",
                             width=1, tag="me")
 if render_cell_:
     create_cell_value()
