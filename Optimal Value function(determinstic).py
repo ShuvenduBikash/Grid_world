@@ -7,17 +7,22 @@ def run():
     H = 10
     gamma = 0.9
     for _ in range(H):
-        time.sleep(1)
-        for i in range(World.y):
-            for j in range(World.x):
-                states = [(i + 1, j), (i - 1, j), (i, j + 1), (i, j - 1)]
-                for state in states:
-                    if World.can_go(state):
-                        if (j, i) not in World.end_states:
-                            World.V[i][j] = max(World.V[i][j], gamma * World.V[state[0]][state[1]])
-                            World.render_cell_value()
-                        else:
-                            World.V[i][j] = World.R[i][j]
+        time.sleep(.1)
+
+        new_V = {}
+        for state in list(World.neighbour_states.keys()):
+            new_V[state] = World.R[state]
+
+            # find all possible neighbour of this state
+            neighbours = World.neighbour_states[state]
+
+            # calculate value making each of them most probable action each time
+            for neighbour in neighbours:
+                state_val = (World.R[state] + gamma * World.V[neighbour])
+                new_V[state] = max(new_V[state], state_val)
+
+        World.V = new_V
+        World.render_cell_value()
 
 
 if __name__ == '__main__':

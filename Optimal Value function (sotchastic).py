@@ -8,7 +8,7 @@ def run():
     H = 10
     gamma = 0.9
     noise = 0.2
-    for _ in range(2):
+    for _ in range(H):
         time.sleep(.1)
 
         new_V = {}
