@@ -10,9 +10,9 @@ player = (0, y - 1)  # position of the player
 restart = False
 score = 1
 walk_reward = -0.04
-render_cell_ = False
+render_cell_ = True
 render_q = True
-render_me = False
+render_me = True
 
 cell_text = [[None for i in range(x)] for j in range(y)]
 q_text = {}
@@ -49,7 +49,7 @@ for s in specials:
 
 def can_go(state):
     x_, y_ = state
-    if 0 <= x_ < x and 0 <= y_ < y and ((x, y) not in walls):
+    if 0 <= x_ < x and 0 <= y_ < y and (x_, y_) not in walls:
         return True
     else:
         return False
