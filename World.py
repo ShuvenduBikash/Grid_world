@@ -31,6 +31,7 @@ states = []
 V = {}
 R = {}
 neighbour_states = {}
+available_actions = {}
 Q = {}
 
 for j in range(y):
@@ -58,13 +59,17 @@ def can_go(state):
 for state in states:
     i = state[0]
     j = state[1]
-    neighbours = [(i + 1, j), (i, j + 1), (i - 1, j), (i, j - 1)]
+    neighbours = [(i + 1, j, 'r'), (i, j + 1, 'd'), (i - 1, j, 'l'), (i, j - 1, 'u')]
     possible_neighbours = []
+    possible_actions = []
 
-    for neighbour in neighbours:
+    for n in neighbours:
+        neighbour = (n[0], n[1])
         if can_go(neighbour):
             possible_neighbours.append(neighbour)
+            possible_actions.append(n[2])
 
+    available_actions[state] = possible_actions
     neighbour_states[state] = possible_neighbours
 
 for state in end_states:
