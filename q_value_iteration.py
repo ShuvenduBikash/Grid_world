@@ -41,33 +41,19 @@ def run():
     for _ in range(H):
         time.sleep(.1)
 
-        # new_V = {}
-        # for state in list(World.neighbour_states.keys()):
-        #     new_V[state] = World.R[state]
-        #
-        #     # find all possible neighbour of this state
-        #     neighbours = World.neighbour_states[state]
-        #
-        #     # calculate value making each of them most probable action each time
-        #     for neighbour in neighbours:
-        #         state_val = 0
-        #         high_prob = (1 - noise)
-        #         low_prob = noise / (len(neighbours) - 1)
-        #
-        #         state_val += high_prob * (World.R[state] + gamma * World.V[neighbour])
-        #
-        #         # iterate stochastic probable state
-        #         for other in neighbours:
-        #             if other != neighbour:
-        #                 state_val += low_prob * (World.R[state] + gamma * World.V[other])
-        #
-        #         new_V[state] = max(new_V[state], state_val)
-
-        new_Q = {}
+        Q = {}
         for state in World.states:
             for action in ['u', 'l', 'd', 'r']:
-                World.Q[(state, action)] = World.R[state] + gamma * max_a(next_state(state, action))
+                # take this action with high probability
+                high_prob = (1 - noise)
+                Q[(state, action)] = high_prob * (World.R[state] + gamma * max_a(next_state(state, action)))
 
+                low_prob = noise/3
+                for other in action:
+                    if other != action:
+                        Q[(state, action)] += low_prob * (World.R[state] + gamma * max_a(next_state(state, other)))
+
+        World.Q = Q
         World.render_q_values()
 
 
