@@ -17,11 +17,11 @@ def max_a(state):
 def next_state(state, action):
     x, y = state
     if action == 'u':
-        y += 1
+        y -= 1
     elif action == 'r':
         x += 1
     elif action == 'd':
-        y -= 1
+        y += 1
     elif action == 'l':
         x -= 1
 
@@ -35,7 +35,7 @@ def next_state(state, action):
 
 def run():
     World.render_cell_value()
-    H = 100
+    H = 10
     gamma = 0.9
     noise = 0.2
     for _ in range(H):
