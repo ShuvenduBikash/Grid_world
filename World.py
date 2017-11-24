@@ -60,7 +60,11 @@ for state in states:
             possible_neighbours.append(neighbour)
 
     neighbour_states[state] = possible_neighbours
-print(neighbour_states)
+
+for state in end_states:
+    neighbour_states[state] = []
+
+# print(neighbour_states)
 
 
 def render_grid():
