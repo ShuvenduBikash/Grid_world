@@ -10,8 +10,6 @@ player = (0, y - 1)  # position of the player
 restart = False
 score = 1
 walk_reward = -0.04
-render_cell_ = False
-render_q = True
 render_me = False
 
 cell_text = [[None for i in range(x)] for j in range(y)]
@@ -80,6 +78,7 @@ for state in states:
     for q in q_values:
         Q[q] = 0
 
+
 # print(neighbour_states)
 
 
@@ -135,11 +134,6 @@ def render_q_values():
             board.itemconfig(q_text[state][action], text="{:.2f}".format(Q[(state, action)]))
 
 
-if render_q:
-    render_tringle()
-    create_q_values_text()
-
-
 def create_cell_value():
     for i in range(y):
         for j in range(x):
@@ -179,9 +173,6 @@ def try_move(dx, dy):
         board.coords(me, new_x * Width + Width * 2 / 10, new_y * Width + Width * 2 / 10, new_x * Width + Width * 8 / 10,
                      new_y * Width + Width * 8 / 10)
         player = (new_x, new_y)
-
-        if render_cell_:
-            render_cell_value()
 
     # handle the special grids
     for (i, j, c, w) in specials:
@@ -232,8 +223,6 @@ if render_me:
     me = board.create_rectangle(player[0] * Width + Width * 2 / 10, player[1] * Width + Width * 2 / 10,
                                 player[0] * Width + Width * 8 / 10, player[1] * Width + Width * 8 / 10, fill="orange",
                                 width=1, tag="me")
-if render_cell_:
-    create_cell_value()
 
 board.grid(row=0, column=0)
 text.grid(row=1, column=0)
@@ -245,3 +234,12 @@ def start_game():
 
 if __name__ == '__main__':
     master.mainloop()
+
+
+def grid_value_mode():
+    create_cell_value()
+
+
+def q_value_mode():
+    render_tringle()
+    create_q_values_text()
