@@ -7,46 +7,34 @@ def run():
     World.render_cell_value()
     H = 10
     gamma = 0.9
-    for _ in range(100):
-        new_V = [[0 for i in range(World.x)] for j in range(World.y)]
-
+    noise = 0.2
+    for _ in range(2):
         time.sleep(.1)
-        for i in range(World.y):
-            for j in range(World.x):
 
-                if (j, i) not in World.end_states:
-                    states = [(i + 1, j), (i, j + 1), (i - 1, j), (i, j - 1)]
-                    new_val = -100000
+        new_V = {}
+        for state in list(World.neighbour_states.keys()):
+            new_V[state] = World.R[state]
 
-                    for k in range(len(states)):
-                        state_val = World.R[i][j]
-                        state = states[k]
-                        state_l = states[(k - 1) % len(states)]
-                        state_r = states[(k + 1) % len(states)]
+            # find all possible neighbour of this state
+            neighbours = World.neighbour_states[state]
 
-                        if World.can_go(state):
-                            y_, x_ = state
-                            state_val += 0.8 * (0.9 * World.V[y_][x_])
+            # calculate value making each of them most probable action each time
+            for neighbour in neighbours:
+                state_val = 0
+                high_prob = (1 - noise)
+                low_prob = noise / (len(neighbours) - 1)
 
-                        if World.can_go(state_l):
-                            y_, x_ = state_l
-                            state_val += 0.1 * (0.9 * World.V[y_][x_])
+                state_val += high_prob * (World.R[state] + gamma * World.V[neighbour])
 
-                        if World.can_go(state_r):
-                            y_, x_ = state_r
-                            state_val += 0.1 * (0.9 * World.V[y_][x_])
+                # iterate stochastic probable state
+                for other in neighbours:
+                    if other != neighbour:
+                        state_val += low_prob * (World.R[state] + gamma * World.V[other])
 
-                        new_val = max(new_val, state_val)
-
-                    new_V[i][j] = new_val
-
-                else:
-                    new_V[i][j] = World.R[i][j]
+                new_V[state] = max(new_V[state], state_val)
 
         World.V = new_V
         World.render_cell_value()
-
-
 
 
 if __name__ == '__main__':
