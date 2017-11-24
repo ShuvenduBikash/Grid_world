@@ -243,3 +243,33 @@ def grid_value_mode():
 def q_value_mode():
     render_tringle()
     create_q_values_text()
+
+
+def next_state(state, action):
+    x, y = state
+    if action == 'u':
+        y -= 1
+    elif action == 'r':
+        x += 1
+    elif action == 'd':
+        y += 1
+    elif action == 'l':
+        x -= 1
+
+    new_state = (x, y)
+
+    if can_go(new_state):
+        return new_state
+    else:
+        return state
+
+
+def max_a(state):
+    if state in end_states:
+        return R[state]
+
+    max_val = Q[(state, 'u')]
+    max_val = max(max_val, Q[(state, 'r')])
+    max_val = max(max_val, Q[(state, 'd')])
+    max_val = max(max_val, Q[(state, 'l')])
+    return max_val
