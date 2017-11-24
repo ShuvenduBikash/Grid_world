@@ -74,9 +74,6 @@ for state in states:
     q_values = [(state, 'u'), (state, 'r'), (state, 'd'), (state, 'l')]
     for q in q_values:
         Q[q] = 0
-for state in end_states:
-    Q[state] = R[state]
-
 
 # print(neighbour_states)
 
@@ -124,7 +121,7 @@ def create_q_values_text():
     for state in end_states:
         q_text[state] = board.create_text(state[0] * Width + Width / 2, state[1] * Width + Width / 2, fill="blue",
                                           font="Times 15",
-                                          text="{:.2f}".format(Q[state]))
+                                          text="{:.2f}".format(R[state]))
 
 
 def render_q_values():

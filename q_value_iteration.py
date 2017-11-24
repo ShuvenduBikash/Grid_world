@@ -5,7 +5,7 @@ import time
 
 def max_a(state):
     if state in World.end_states:
-        return World.Q[state]
+        return World.R[state]
 
     max_val = World.Q[(state, 'u')]
     max_val = max(max_val, World.Q[(state, 'r')])
