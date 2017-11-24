@@ -129,6 +129,40 @@ def create_q_values_text():
                                           text="{:.2f}".format(R[state]))
 
 
+triangle_size = 0.1
+arrows = {}
+
+
+def create_arrow():
+    for state in states:
+        i = state[0]
+        j = state[1]
+        arrows[state] = {}
+        arrows[state]['u'] = board.create_polygon((i + 0.5 - triangle_size) * Width, (j + triangle_size) * Width,
+                                                  (i + 0.5 + triangle_size) * Width, (j + triangle_size) * Width,
+                                                  (i + 0.5) * Width, j * Width,
+                                                  fill="white", width=1)
+
+        arrows[state]['d'] = board.create_polygon((i + 0.5 - triangle_size) * Width, (j + 1 - triangle_size) * Width,
+                                                  (i + 0.5 + triangle_size) * Width, (j + 1 - triangle_size) * Width,
+                                                  (i + 0.5) * Width, (j + 1) * Width,
+                                                  fill="white", width=1)
+
+        arrows[state]['l'] = board.create_polygon((i + triangle_size) * Width, (j + 0.5 - triangle_size) * Width,
+                                                  (i + triangle_size) * Width, (j + 0.5 + triangle_size) * Width,
+                                                  i * Width, (j + 0.5) * Width,
+                                                  fill="white", width=1)
+
+        arrows[state]['r'] = board.create_polygon((i + 1 - triangle_size) * Width, (j + 0.5 - triangle_size) * Width,
+                                                  (i + 1 - triangle_size) * Width, (j + 0.5 + triangle_size) * Width,
+                                                  (i + 1) * Width, (j + 0.5) * Width,
+                                                  fill="white", width=1)
+
+
+def update_arrow_color(state, action, color='green'):
+    board.itemconfig(arrows[state][action], fill=color)
+
+
 def render_q_values():
     for state in states:
         for action in actions:

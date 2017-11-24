@@ -5,7 +5,7 @@ import time
 
 def run():
     World.render_cell_value()
-    H = 1
+    H = 20
     gamma = 0.9
     noise = 0.2
     for _ in range(H):
@@ -54,6 +54,7 @@ if __name__ == '__main__':
 
     # Enabling specific grid
     World.grid_value_mode()
+    World.create_arrow()
 
     t = threading.Thread(target=run)
     t.daemon = True
